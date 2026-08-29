@@ -1,26 +1,18 @@
-name: sync
-on:
-  schedule:
-    - cron: '0 * * * *'
-  workflow_dispatch:
-permissions:
-  contents: write
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  sync:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: stamp
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v6
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
         run: |
-          F=".github/9biapj14k41n"
-          touch "$F"
-          printf "%s run=%s n=%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$RANDOM" "$RANDOM" >> "$F"
-          W=(fix update patch sync refresh build deploy release optimize improve enhance stabilize)
-          A=${W[$RANDOM % ${#W[@]}]}
-          B=${W[$RANDOM % ${#W[@]}]}
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          for i in 1 2 3 4; do
-            git add -A && git commit -m "$A-$B-$RANDOM" && git push && break
-            sleep $(( i * 2 ))
-          done
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
